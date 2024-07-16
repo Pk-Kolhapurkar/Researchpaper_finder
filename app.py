@@ -27,9 +27,13 @@ else:
     # User input with text_area for multi-line input
     user_input = st.text_area(
         "Enter your query:",
-        value="Get me a list of RAG papers from 2024. Include the source, title, author, publication date, a brief summary, githublink and a link to each paper.",
+        value="Get me a list of RAG papers from 2024.",
         height=150
     )
+
+    # Append fixed information to ensure these details are always included
+    fixed_details = " Include the source, title, author, publication date, a brief summary, GitHub link, and a link to each paper."
+    full_query = user_input.strip() + fixed_details
 
     # Initialize the arxiv_qa_assistant
     assistants = taskingai.assistant.list_assistants()
@@ -43,7 +47,7 @@ else:
                 user_message = taskingai.assistant.create_message(
                     assistant_id=arxiv_qa_assistant.assistant_id,
                     chat_id=new_chat.chat_id,
-                    text=user_input
+                    text=full_query
                 )
                 
                 assistant_message = taskingai.assistant.generate_message(
